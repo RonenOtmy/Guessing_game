@@ -1,0 +1,91 @@
+import random
+
+
+def change_word():
+  list_word = ["work", "home"]
+  word = random.choice(list_word)
+  list_word = list_word.remove(word)
+  if list_word == []:
+    return True
+  else:
+    return word
+
+
+def random_word():
+  word = change_word()
+  length_word = len(word)
+  array = ["_"] * length_word
+  return word, length_word, array
+
+
+def change_player():
+  global current_player
+  if current_player == 0:
+    current_player += 1
+  else:
+    current_player = 0
+
+
+def add_score():
+  global current_player
+  global score
+  if current_player == 0:
+    score[0] += 1
+  else:
+    score[1] += 1
+
+
+def input_letter(word, length_word, array):
+  while change_word() != True:
+    print(" ".join(array))
+    guesst_letters = []
+
+    while "_" in array:
+      print(f"\nPlayer {current_player+1} turn\n")
+      global letter
+
+      letter = input("Enter a letter: ")
+      if not letter.isalpha():
+        print("Enter again letter: ")
+      elif len(letter) != 1:
+        print("Enter one letter: ")
+      elif letter in guesst_letters:
+        print("the letter is guested")
+        print(" ".join(array))
+      elif letter in word:
+        guesst_letters.append(letter)
+        change(word, length_word, array)
+
+        print(" ".join(array))
+        add_score()
+        change_player()
+        continue
+      elif letter not in word:
+        print("no in word ")
+        print(" ".join(array))
+        guesst_letters.append(letter)
+        change_player()
+
+    print("\nThe word is guessted!\n")
+    break
+  change_word()  
+  #return array
+
+
+def change(word, length_word, array):
+  for i in range(length_word):
+    if letter in word[i]:
+      array[i] = letter
+
+
+score = [0, 0]
+current_player = 0
+
+word, length_word, array = random_word()
+
+print("Welcom to the gussing game\n")
+
+input_letter(word, length_word, array)
+
+print(f"\nPlayer {1} score is {score[0]}")
+print(f"\nPlayer {2} score is {score[1]}")
